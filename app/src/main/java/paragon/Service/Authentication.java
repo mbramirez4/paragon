@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import paragon.Model.Player.Player;
-import paragon.Service.FilesManager;
 
 public class Authentication {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -58,8 +57,8 @@ public class Authentication {
         String[] playerData = requestUserNamePassword();
         Player player = createPlayer(playerData[0], playerData[1]);
 
-        FilesManager.saveToJson(player);
-
+        player.save();
+        
         return player;
     }
 }

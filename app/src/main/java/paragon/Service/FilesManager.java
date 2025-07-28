@@ -17,12 +17,7 @@ public class FilesManager {
             createRootDirectory(jsonStorable);
             
             String filePathString = jsonStorable.getFilePath();
-            if (fileExists(filePathString)) {
-                return false;
-            }
-            
             Path filePath = Paths.get(filePathString);
-            
             String jsonContent = gson.toJson(jsonStorable);
             
             try (FileWriter writer = new FileWriter(filePath.toFile())) {
