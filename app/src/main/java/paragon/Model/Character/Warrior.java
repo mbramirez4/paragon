@@ -21,6 +21,24 @@ public class Warrior extends Character {
         this.intelligence = initializeAttribute(5, 15);;
     }
 
+    @Override
+    public String toString() {
+        return "Warrior [name=" + name + ", level=" + level + "]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Warrior) {
+            return this.id.equals(((Warrior) obj).id);
+        }
+        
+        return false;
+    }
+
     public void attack() {
         
     }

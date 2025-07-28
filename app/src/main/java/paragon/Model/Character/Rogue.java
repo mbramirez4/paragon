@@ -21,6 +21,25 @@ public class Rogue extends Character {
         this.intelligence = initializeAttribute(5, 20);
     }
 
+    @Override
+    public String toString() {
+        return "Rogue [name=" + name + ", level=" + level + "]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Rogue) {
+            return this.id.equals(((Rogue) obj).id);
+        }
+        
+        return false;
+    }
+
+
     public void attack() {
         
     }

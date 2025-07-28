@@ -21,6 +21,24 @@ public class Wizard extends Character {
         this.intelligence = initializeAttribute(25, 40);
     }
 
+    @Override
+    public String toString() {
+        return "Wizard [name=" + name + ", level=" + level + "]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Wizard) {
+            return this.id.equals(((Warrior) obj).id);
+        }
+        
+        return false;
+    }
+
     public void attack() {
         
     }

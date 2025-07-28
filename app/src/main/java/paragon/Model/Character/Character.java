@@ -19,4 +19,8 @@ public abstract class Character implements Fighter {
     protected static int initializeAttribute(int min, int max) {
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
+
+    protected void levelUp() {
+        level++;
+    }
 }
