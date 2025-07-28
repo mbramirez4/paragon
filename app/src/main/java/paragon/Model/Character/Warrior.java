@@ -1,5 +1,7 @@
 package paragon.Model.Character;
 
+import java.util.UUID;
+
 public class Warrior extends Character {
     String abilities;
     String items;
@@ -9,8 +11,7 @@ public class Warrior extends Character {
         this.abilities = abilities;
         this.items = items;
 
-        this.id = Character.getNumCharacters();
-        Character.incrementNumCharacters();
+        this.id = UUID.randomUUID();
 
         this.level = 1;
         this.healthPoints = initializeAttribute(100, 170);

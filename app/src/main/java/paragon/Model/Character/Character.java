@@ -1,7 +1,9 @@
 package paragon.Model.Character;
 
+import java.util.UUID;
+
 public abstract class Character implements Fighter {
-    protected int id;
+    protected UUID id;
     protected String name;
     protected int level;
     protected int healthPoints;
@@ -10,18 +12,8 @@ public abstract class Character implements Fighter {
     protected int strength;
     protected int intelligence;
 
-    protected static int numCharacters = 0;
-
     public void receiveDamage(int damage) {
         healthPoints -= damage;
-    }
-
-    public static int getNumCharacters() {
-        return numCharacters;
-    }
-
-    protected static void incrementNumCharacters() {
-        numCharacters++;
     }
 
     protected static int initializeAttribute(int min, int max) {
