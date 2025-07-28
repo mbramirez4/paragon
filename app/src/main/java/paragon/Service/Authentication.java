@@ -2,14 +2,9 @@ package paragon.Service;
 
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import paragon.Model.Player.Player;
 
 public class Authentication {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
     private static String[] requestUserNamePassword() {
         Scanner scanner = new Scanner(System.in);
 
@@ -42,8 +37,7 @@ public class Authentication {
                 continue;
             }
 
-            String playerString = FilesManager.loadFromJson(player);
-            savedPlayer = gson.fromJson(playerString, Player.class);
+            savedPlayer = FilesManager.loadFromJson(player, Player.class);
             
             if (savedPlayer.equals(player)) {
                 return savedPlayer;

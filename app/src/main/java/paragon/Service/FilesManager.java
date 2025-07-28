@@ -3,6 +3,8 @@ package paragon.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import paragon.Model.Character.Character;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FilesManager {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder()
+        .setPrettyPrinting()
+        .registerTypeAdapter(Character.class, new CharacterTypeAdapter())
+        .create();
     
     public static boolean saveToJson(JsonStorable jsonStorable) {
         try {
@@ -43,7 +48,7 @@ public class FilesManager {
         return Files.exists(filePath);
     }
     
-    public static String loadFromJson(JsonStorable jsonStorable) {
+    private static String getJsonContent(JsonStorable jsonStorable) {
         try {
             Path filePath = Paths.get(jsonStorable.getFilePath());
             
@@ -55,6 +60,18 @@ public class FilesManager {
             
         } catch (IOException e) {
             System.err.println("Error loading player data: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    public static <T> T loadFromJson(JsonStorable jsonStorable, Class<T> classOfT) {
+        try {
+            String jsonContent = getJsonContent(jsonStorable);
+            System.out.println(jsonContent);
+            
+            return gson.fromJson(jsonContent, classOfT);
+        } catch (Exception e) {
+            System.err.println("Error deserializing JSON: " + e.getMessage());
             return null;
         }
     }
