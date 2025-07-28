@@ -2,7 +2,6 @@ package paragon.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import paragon.Model.Player.Player;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,65 +10,57 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FilesManager {
-    
-    private static final String PLAYERS_DIRECTORY = "players";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
-    public static boolean savePlayerToJson(Player player) {
+    public static boolean saveToJson(JsonStorable jsonStorable) {
         try {
-            createPlayersDirectory();
+            createRootDirectory(jsonStorable);
             
-            String fileName = player.getUserName() + ".json";
-            if (playerFileExists(fileName)) {
-                System.out.println("Player data already exists for: " + player.getUserName());
+            String filePathString = jsonStorable.getFilePath();
+            if (fileExists(filePathString)) {
                 return false;
             }
             
-            Path filePath = Paths.get(PLAYERS_DIRECTORY, fileName);
+            Path filePath = Paths.get(filePathString);
             
-            String jsonContent = gson.toJson(player);
+            String jsonContent = gson.toJson(jsonStorable);
             
             try (FileWriter writer = new FileWriter(filePath.toFile())) {
                 writer.write(jsonContent);
-            }
-            
-            System.out.println("Player data saved successfully to: " + filePath);
+            }            
             return true;
             
         } catch (IOException e) {
-            System.err.println("Error saving player data: " + e.getMessage());
+            System.err.println("Error saving object data: " + e.getMessage());
             return false;
         }
     }
     
-    private static void createPlayersDirectory() throws IOException {
-        Path playersPath = Paths.get(PLAYERS_DIRECTORY);
-        if (!Files.exists(playersPath)) {
-            Files.createDirectories(playersPath);
+    private static void createRootDirectory(JsonStorable jsonStorable) throws IOException {
+        Path rootPath = Paths.get(jsonStorable.getRootDirectory());
+        if (!Files.exists(rootPath)) {
+            Files.createDirectories(rootPath);
         }
     }
     
-    public static Player loadPlayerFromJson(String userName) {
+    public static boolean fileExists(String pathString) {
+        Path filePath = Paths.get(pathString);
+        return Files.exists(filePath);
+    }
+    
+    public static String loadFromJson(JsonStorable jsonStorable) {
         try {
-            String fileName = userName + ".json";
-            Path filePath = Paths.get(PLAYERS_DIRECTORY, fileName);
+            Path filePath = Paths.get(jsonStorable.getFilePath());
             
             if (!Files.exists(filePath)) {
                 return null;
             }
             
-            String jsonContent = Files.readString(filePath);
-            return gson.fromJson(jsonContent, Player.class);
+            return Files.readString(filePath);
             
         } catch (IOException e) {
             System.err.println("Error loading player data: " + e.getMessage());
             return null;
         }
-    }
-    
-    public static boolean playerFileExists(String userName) {
-        String fileName = userName + ".json";
-        Path filePath = Paths.get(PLAYERS_DIRECTORY, fileName);
-        return Files.exists(filePath);
     }
 }
