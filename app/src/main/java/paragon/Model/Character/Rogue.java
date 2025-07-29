@@ -1,19 +1,14 @@
 package paragon.Model.Character;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import paragon.Model.Abilities.Ability;
 
 public class Rogue extends Character {
-    String abilities;
     String items;
 
-    public Rogue(String name, String abilities, String items) {
-        this.name = name;
-        this.abilities = abilities;
-        this.items = items;
-
-        this.id = UUID.randomUUID();
-
-        this.level = 1;
+    public Rogue(String name, ArrayList<Ability> abilities, String items) {
+        super(name, abilities, items);
+        
         this.healthPoints = initializeAttribute(80, 130);
         this.manaPoints = initializeAttribute(40, 70);
         this.agility = initializeAttribute(25, 40);
@@ -41,6 +36,10 @@ public class Rogue extends Character {
 
 
     public void attack() {
+        
+    }
+
+    public void useAbility() {
         
     }
 

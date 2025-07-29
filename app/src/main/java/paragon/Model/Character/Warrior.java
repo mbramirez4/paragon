@@ -1,19 +1,14 @@
 package paragon.Model.Character;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import paragon.Model.Abilities.Ability;
 
 public class Warrior extends Character {
-    String abilities;
     String items;
 
-    public Warrior(String name, String abilities, String items) {
-        this.name = name;
-        this.abilities = abilities;
-        this.items = items;
+    public Warrior(String name, ArrayList<Ability> abilities, String items) {
+        super(name, abilities, items);
 
-        this.id = UUID.randomUUID();
-
-        this.level = 1;
         this.healthPoints = initializeAttribute(100, 170);
         this.manaPoints = initializeAttribute(30, 50);
         this.agility = initializeAttribute(5, 15);

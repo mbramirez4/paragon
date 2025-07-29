@@ -1,11 +1,14 @@
 package paragon.Model.Character;
 
+import java.util.ArrayList;
+import paragon.Model.Abilities.Ability;
+
 public class Factory {
     public static Character createCharacter(
         String type,
-        String name
+        String name,
+        ArrayList<Ability> abilities
     ) {
-        String abilities = "";
         String items = "";
         System.out.println(type);
         switch (type) {
