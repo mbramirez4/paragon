@@ -3,6 +3,7 @@ package paragon.Model.Player;
 import java.util.ArrayList;
 import paragon.Model.Character.Character;
 import paragon.Model.Character.Factory;
+import paragon.Model.Abilities.Ability;
 import paragon.Service.JsonStorable;
 import paragon.Service.FilesManager;
 
@@ -47,8 +48,16 @@ public class Player implements JsonStorable {
         return userName;
     }
 
+    public ArrayList<Character> getCharacters() {
+        return characters;
+    }
+
     public Character getCurrentCharacter() {
         return currentCharacter;
+    }
+
+    public void setCurrentCharacter(Character currentCharacter) {
+        this.currentCharacter = currentCharacter;
     }
 
     public String listCharacters() {
@@ -81,10 +90,10 @@ public class Player implements JsonStorable {
         return false;
     }
 
-    public void createCharacter(String type, String name) {
-        Character character = Factory.createCharacter(type, name);
-        addCharacter(character);
-
+    public void createCharacter(
+        String type, String name, ArrayList<Ability> abilities
+    ) {
+        addCharacter(Factory.createCharacter(type, name, abilities));
         save();
     }
 

@@ -67,7 +67,6 @@ public class FilesManager {
     public static <T> T loadFromJson(JsonStorable jsonStorable, Class<T> classOfT) {
         try {
             String jsonContent = getJsonContent(jsonStorable);
-            System.out.println(jsonContent);
             
             return gson.fromJson(jsonContent, classOfT);
         } catch (Exception e) {
