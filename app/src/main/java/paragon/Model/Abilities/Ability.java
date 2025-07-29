@@ -6,13 +6,11 @@ public class Ability {
     private String name;
     private int manaCost;
     private int baseDamage;
-    private AbilityType type;
 
-    public Ability(String name, int manaCost, int baseDamage, AbilityType type) {
+    public Ability(String name, int manaCost, int baseDamage) {
         this.name = name;
         this.manaCost = manaCost;
         this.baseDamage = baseDamage;
-        this.type = type;
     }
 
     public String getName() {
@@ -27,13 +25,9 @@ public class Ability {
         return baseDamage;
     }
 
-    public AbilityType getType() {
-        return type;
-    }
-
     @Override
     public String toString() {
-        return "Ability [name=" + name + ", manaCost=" + manaCost + ", baseDamage=" + baseDamage + ", type=" + type + "]";
+        return "Ability [name=" + name + ", manaCost=" + manaCost + ", baseDamage=" + baseDamage + "]";
     }
 
     @Override
@@ -58,7 +52,6 @@ public class Ability {
         return (
             manaCost == other.manaCost
             && baseDamage == other.baseDamage
-            && type == other.type
         );
     }
 }

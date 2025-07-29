@@ -60,6 +60,4 @@ public class AbilityManager implements JsonStorable {
         }
         return sampleAbilities;
     }
-
-    
 }
