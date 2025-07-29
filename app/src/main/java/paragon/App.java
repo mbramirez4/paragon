@@ -3,12 +3,242 @@
  */
 package paragon;
 
+import java.util.Scanner;
+import java.util.ArrayList;
+
+import paragon.Model.Abilities.Ability;
+import paragon.Model.Abilities.AbilityManager;
+import paragon.Model.Character.Character;
+import paragon.Model.Player.Player;
+import paragon.Service.Authentication;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+    static Scanner scanner = new Scanner(System.in);
+    static AbilityManager abilityManager = new AbilityManager();
+
+    private static Player welcomeMenu() {
+        System.out.println("Welcome to Paragon!");
+
+        int option;
+        while (true) {
+            System.out.println("Please select an option:");
+            System.out.println("1. Login");
+            System.out.println("2. Register");
+            System.out.println("3. Exit");
+
+            option = scanner.nextInt();
+            scanner.nextLine();
+            if (option < 1 || option > 3) {
+                System.out.println("Invalid option. Please select a valid option.");
+                continue;
+            }
+
+            // // scanner.close();
+            break;
+        }
+
+        Player player = null;
+        switch (option) {
+            case 1:
+                System.out.println("Login");
+                player = Authentication.loginPlayer();
+                break;
+            case 2:
+                System.out.println("Register");
+                player = Authentication.registerPlayer();
+                break;
+            case 3:
+                System.out.println("Exit");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid option");
+                player = null;
+            }
+        
+        if (player != null) {
+            System.out.println("Hi, " + player.getUserName());
+        }
+        
+        return player;
+    }
+
+    private static String getCharacterType() {
+        String[] characterTypes = new String[]{"Warrior", "Wizard", "Rogue"};
+        String optionsMessage = "What's your character's class?\n";
+        optionsMessage += "Please select an option:\n";
+        for (int i = 0; i < characterTypes.length; i++) {
+            optionsMessage += (i + 1) + ". " + characterTypes[i] + "\n";
+        }
+        
+        int option;
+        while (true) {
+            System.out.println(optionsMessage);
+
+            option = scanner.nextInt();
+            scanner.nextLine();
+            if (option < 1 || option > 3) {
+                System.out.println("Invalid option. Please select a valid option.");
+                continue;
+            }
+
+            break;
+        }
+
+        return characterTypes[option - 1];
+    }
+
+    private static ArrayList<Ability> chooseAbilities(int sampleSize, int nAbilities) {
+        Ability[]sampledAbilities = abilityManager.sampleAbilities(sampleSize);
+        String optionsMessage = "";
+        for (int i = 0; i < sampleSize; i++) {
+            optionsMessage += (i + 1) + ". " + sampledAbilities[i].toString() + "\n";
+        }
+        
+        int option;
+        ArrayList<Ability> abilities = new ArrayList<Ability>();
+        ArrayList<Integer> indices = new ArrayList<Integer>();
+
+        for (int i = 0; i < nAbilities;) {
+            System.out.println("Choose one ability from the list (" + (i+1) + "/" + nAbilities + "):");
+            System.out.println(optionsMessage);
+            option = scanner.nextInt();
+            scanner.nextLine();
+            if (option < 1 || option > sampleSize || indices.contains(option - 1)) {
+                System.out.println("Invalid option. Please select a valid option.");
+                continue;
+            }
+
+            abilities.add(sampledAbilities[option - 1]);
+            indices.add(option - 1);
+            i++;
+        }
+
+        return abilities;
+    }
+
+    private static void newCharacterMenu(Player player) {
+        System.out.println("What's your character's name?");
+        String name = scanner.nextLine();
+        System.out.println(name);
+        
+        String characterType = getCharacterType();
+        ArrayList<Ability> abilities = chooseAbilities(5, 2);
+        player.createCharacter(characterType, name, abilities);
+    }
+
+    private static void chooseCharacterMenu(Player player) {
+        String optionsMessage = "Choose a character to play with:\n";
+        optionsMessage += "0. Return\n";
+        
+        ArrayList<Character> charactersList = player.getCharacters();
+        for (int i = 0; i < charactersList.size(); i++) {
+            optionsMessage += (i + 1) + ". " + charactersList.get(i).toString() + "\n";
+        }
+
+        int option;
+        while (true) {
+            System.out.println(optionsMessage);
+            option = scanner.nextInt();
+            scanner.nextLine();
+            if (option < 0 || option > charactersList.size()) {
+                System.out.println("Invalid option. Please select a valid option.");
+                continue;
+            }
+
+            break;
+        }
+
+        if (option == 0) {
+            return;
+        }
+
+        player.setCurrentCharacter(charactersList.get(option - 1));
+        System.out.println("You are now playing with");
+        System.out.println(player.getCurrentCharacter().toString());
+    }
+
+    private static Player playerMenu(Player player) {
+        System.out.println("What do you want to do now?");
+        
+        int option;
+        while (true) {
+            System.out.println("Please select an option:");
+            System.out.println("0. List your characters");
+            System.out.println("1. Create new character");
+            System.out.println("2. Play with a character");
+            System.out.println("3. Logout");
+            System.out.println("4. Exit");
+
+            option = scanner.nextInt();
+            scanner.nextLine();
+            if (option < 0 || option > 4) {
+                System.out.println("Invalid option. Please select a valid option.");
+                continue;
+            }
+
+            break;
+        }
+
+        switch (option) {
+            case 0:
+                System.out.println("List your characters");
+                String charactersList = player.listCharacters();
+                System.out.println(charactersList);
+                break;
+            case 1:
+                System.out.println("Create new character");
+                newCharacterMenu(player);
+                break;
+            case 2:
+                System.out.println("Play with a character");
+                chooseCharacterMenu(player);
+                break;
+            case 3:
+                System.out.println("Logout");
+                player = null;
+                break;
+            case 4:
+                System.out.println("Exit");
+                System.exit(0);
+            default:
+                System.out.println("Invalid option");
+                player = null;
+            }
+        
+            return player;
+    }
+
+    private static Player setupPlayer() {
+        return setupPlayer(null);
+    }
+
+    private static Player setupPlayer(Player otherPlayer) {
+        Player player = null;
+        while (player == null || player.getCurrentCharacter() == null) {
+            while (player == null) {
+                player = welcomeMenu();
+            }
+            while (player != null && player.getCurrentCharacter() == null) {
+                player = playerMenu(player);
+                
+                if (player == null || otherPlayer == null) {
+                    continue;
+                }
+
+                Character playerCharacter = player.getCurrentCharacter();
+                if (otherPlayer.getCurrentCharacter().equals(playerCharacter)) {
+                    System.out.println("You cannot play with the same character as another player.");
+                    player.setCurrentCharacter(null);
+                }
+            }
+        }
+
+        return player;
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        Player p1 = setupPlayer();
+        Player p2 = setupPlayer(p1);
     }
 }
