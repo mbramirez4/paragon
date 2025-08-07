@@ -14,11 +14,8 @@ public class Rogue extends Character {
         this.agility = initializeAttribute(25, 40);
         this.strength = initializeAttribute(5, 15);
         this.intelligence = initializeAttribute(5, 20);
-    }
 
-    @Override
-    public String toString() {
-        return "Rogue [name=" + name + ", level=" + level + "]";
+        restoreAttributes();
     }
 
     @Override
@@ -34,15 +31,7 @@ public class Rogue extends Character {
         return false;
     }
 
-
-    public void attack() {
-        
-    }
-
-    public void useAbility() {
-        
-    }
-
+    @Override
     public int overallPower() {
         return (int) (agility * level * 1.5);
     }

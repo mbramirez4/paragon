@@ -14,11 +14,8 @@ public class Warrior extends Character {
         this.agility = initializeAttribute(5, 15);
         this.strength = initializeAttribute(25, 40);
         this.intelligence = initializeAttribute(5, 15);;
-    }
 
-    @Override
-    public String toString() {
-        return "Warrior [name=" + name + ", level=" + level + "]";
+        restoreAttributes();
     }
 
     @Override
@@ -34,10 +31,7 @@ public class Warrior extends Character {
         return false;
     }
 
-    public void attack() {
-        
-    }
-
+    @Override
     public int overallPower() {
         return strength * level + healthPoints;
     }

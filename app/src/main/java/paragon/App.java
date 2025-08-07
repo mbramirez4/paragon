@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import paragon.Model.Abilities.Ability;
 import paragon.Model.Abilities.AbilityManager;
+import paragon.Model.Battle.Battle;
 import paragon.Model.Character.Character;
 import paragon.Model.Player.Player;
 import paragon.Service.Authentication;
@@ -240,5 +241,21 @@ public class App {
     public static void main(String[] args) {
         Player p1 = setupPlayer();
         Player p2 = setupPlayer(p1);
+
+        Battle battle = new Battle(p1, p2);
+        Player winner = battle.play();
+
+        
+        if (winner != null) {
+            Character winnerCharacter = winner.getCurrentCharacter();
+            Ability gainedAbility = chooseAbilities(3, 1).get(0);
+            winnerCharacter.addAbility(gainedAbility);
+            winnerCharacter.levelUp();
+            
+            p1.setCurrentCharacter(null);
+            p2.setCurrentCharacter(null);
+            winner.save();
+        }
+
     }
 }

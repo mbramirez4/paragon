@@ -14,11 +14,8 @@ public class Wizard extends Character {
         this.agility = initializeAttribute(5, 15);
         this.strength = initializeAttribute(5, 15);
         this.intelligence = initializeAttribute(25, 40);
-    }
 
-    @Override
-    public String toString() {
-        return "Wizard [name=" + name + ", level=" + level + "]";
+        restoreAttributes();
     }
 
     @Override
@@ -34,10 +31,7 @@ public class Wizard extends Character {
         return false;
     }
 
-    public void attack() {
-        
-    }
-
+    @Override
     public int overallPower() {
         return intelligence * level + manaPoints;
     }
